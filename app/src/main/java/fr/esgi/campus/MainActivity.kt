@@ -1,6 +1,7 @@
 package fr.esgi.campus
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +17,16 @@ import fr.esgi.campus.ui.theme.CampusTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val capacity = "douze".toIntOrNull()
+        val TAG = "Campus"
+        Log.d(TAG, "Places : $capacity")
+        /**
+         * error step 2 :
+         *  - Failed to execute the transaction
+         *  - Fatal Exception :
+         *      - RuntimeException
+         *      - NumberFormatException
+        */
         enableEdgeToEdge()
         setContent {
             CampusTheme {
