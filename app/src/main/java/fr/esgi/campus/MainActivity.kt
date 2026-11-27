@@ -12,10 +12,20 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -84,17 +94,61 @@ private fun EventHeaderPreview() {
 }
 
 @Composable
+fun SearchField(state: TextFieldState, modifier: Modifier = Modifier) {
+    TextField(
+        label = { Text("Rechercher") },
+        state = state
+    )
+}
+
+@Composable
 fun EventListScreen(modifier: Modifier = Modifier) {
+    var favoriteIds by rememberSaveable { mutableStateOf(listOf<Int>()) }
+    val categories = FakeEvents.list.map { it.category }.distinct()
+    val queryState = rememberTextFieldState()
+    var selectedCategory by remember { mutableStateOf<String?>(null) }
+    val visibleElements = FakeEvents.list.filter {
+        it.title.contains(queryState.text, ignoreCase = true)
+            &&
+        (selectedCategory == null || it.category == selectedCategory)
+
+    }
+    SearchField(state = queryState)
+    CategoryRow(
+        categories = categories,
+        onCategorySelect = {category -> selectedCategory = if (selectedCategory == category) null else category},
+        selected = selectedCategory
+    )
+
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(FakeEvents.list) { event ->
+        item { Text("Mes favoris : ${favoriteIds.size}") }
+        items(visibleElements) { event ->
+            val isFavorite = event.id in favoriteIds
             EventCard(
                 event = event,
                 onClick = {},
-                onBook = {}
+                onBook = {},
+                isFavorite = isFavorite,
+                onFavoriteClick = {
+                    favoriteIds = if (isFavorite) favoriteIds - event.id else favoriteIds + event.id
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun CategoryRow(categories: List<String>, onCategorySelect: (String) -> Unit, selected: String?) {
+    LazyRow {
+        items(categories) { category ->
+            FilterChip(
+                selected = category == selected,
+                onClick = { onCategorySelect(category) },
+                label = { Text(category) }
             )
         }
     }

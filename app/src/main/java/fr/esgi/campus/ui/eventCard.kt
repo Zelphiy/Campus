@@ -24,6 +24,8 @@ fun EventCard(
     event: Event,
     onClick: () -> Unit,
     onBook: () -> Unit,
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -60,13 +62,18 @@ fun EventCard(
                 )
             }
             Button(
+                onClick = onFavoriteClick
+            ) {
+                Text(if (isFavorite) "★ Favori" else "☆ Ajouter aux favoris")
+            }
+            Button(
                 enabled = event.capacity > 0,
                 onClick = {
                     Log.d("Reservation", "${event.title} a été reservé")
                     onBook
                 }
             ) {
-                Text(stringResource(R.string.app_book_button))
+                Text(stringResource(R.string.book))
             }
         }
     }
@@ -98,12 +105,16 @@ private fun EventCardPreview() {
         EventCard(
             event = event1,
             onClick = {},
-            onBook = {}
+            onBook = {},
+            isFavorite = false,
+            onFavoriteClick = {}
         )
         EventCard(
             event = eventWithLongTitleAndNoLocation,
             onClick = {},
-            onBook = {}
+            onBook = {},
+            isFavorite = false,
+            onFavoriteClick = {}
         )
     }
 }
