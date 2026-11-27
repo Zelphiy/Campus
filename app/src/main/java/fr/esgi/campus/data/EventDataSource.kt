@@ -7,7 +7,8 @@ object FakeEvents {
             title = "Introduction à Jetpack Compose et Material 3",
             category = "ANDROID",
             location = "Amphithéâtre A",
-            capacity = 150
+            capacity = 150,
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec molestie aliquet nunc, eget vehicula turpis efficitur pretium. Nullam euismod felis eu consectetur rhoncus. Morbi fermentum ac velit et pellentesque. Integer non massa sed turpis condimentum cursus nec in urna. Proin porttitor efficitur quam, ut tincidunt lectus sollicitudin in. Sed risus sapien, pretium nec hendrerit quis, vestibulum a nisi. Vestibulum eget dictum diam, non pulvinar mauris. Vestibulum nec purus in massa maximus congue non interdum magna. Cras dignissim est at ipsum pretium facilisis. Nulla enim augue, fermentum sit amet malesuada nec, fermentum vel magna. Aenean viverra eu nisl ut porta."
         ),
         Event(
             id = 2,

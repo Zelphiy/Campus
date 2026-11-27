@@ -12,9 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.esgi.campus.R
 import fr.esgi.campus.data.Event
 
 @Composable
@@ -45,7 +47,10 @@ fun EventCard(
                 text = event.location ?: "Lieu à confirmer",
             )
             TextButton(
-                onClick = onClick,
+                onClick = {
+                    onClick
+                    Log.d("Voir", "${event.title} a été vue")
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
@@ -53,14 +58,15 @@ fun EventCard(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.End
                 )
-                Log.d("Voir", "${event.title} a été vue")
             }
             Button(
                 enabled = event.capacity > 0,
-                onClick = onBook
+                onClick = {
+                    Log.d("Reservation", "${event.title} a été reservé")
+                    onBook
+                }
             ) {
-                Text("Réserver")
-                Log.d("Reservation", "${event.title} a été reservé")
+                Text(stringResource(R.string.app_book_button))
             }
         }
     }
